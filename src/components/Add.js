@@ -1,5 +1,5 @@
 import React from 'react'
-import {Container, Row, Col } from 'reactstrap';
+import {Container, Row} from 'reactstrap';
 
 class Add extends React.Component {
   constructor(){
@@ -48,7 +48,7 @@ class Add extends React.Component {
               </Row>
               <Row>
                   <div className="text-center">
-                    <button className="add-btn" type="button" onClick={this.createFortune}>ADD</button>
+                    <button className="add-btn" type="button" onClick={this.props.addFortune}>SUBMIT</button>
                   </div>
             </Row>
           </form>

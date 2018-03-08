@@ -7,6 +7,8 @@ class App extends React.Component {
   constructor() {
     super();
     this.refreshFortune = this.refreshFortune.bind(this);
+    this.addFortune = this.addFortune.bind(this);
+    /*this.handleErros = this.handleErrors.bind(this);*/
 
     // We start with a empty state. refreshFortune will populate it.
     this.state = {
@@ -25,40 +27,49 @@ class App extends React.Component {
    But later, we will implement this function to go get a new
    fortune from the backend*/
   refreshFortune() {
-    var fortuneItem = {
-      fortuneStr: "you will have a good day",
-      id: "11111",
-      timestamp: new Date().toISOString(),
-      author: "corean"
-    }
-    console.log(fortuneItem);
-    const fortune = {...this.state.fortune};
-    //set state
-    this.setState({ fortune: fortuneItem});
+    console.log("refreshing fortune...");
+    fetch("http://localhost:4000/fortune")
+    .then(data => data.json())
+    .then(data => {
+      console.log("new fortune fetched", data);
+      this.setState({fortune: data});
+    });
   }
-  
 
-/*
+  /*function handleErrors(response) {
+    if (!response.ok){
+      throw Error(response.statusText);
+    }
+     return response;
+  }*/
+
+
   addFortune(fortune){
     console.log("add fortune called");
-    //update our state
-    //make a copy of our state first//
-    const fortunes = {...this.state.fortunes};
-    //add in our new fish
-    fortune = fortune;
+  /*  fetch("http://localhost:4000/fortune", {
+      method: 'PUT',
+      body: JSON.stringify(fortune),
+      headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then(handleErrors)
+  .then(function(response){
+    console.log("ok");
+  })
+  .catch(function(error){
+    console.log(error);
+  }); */
 
-    //set state
-    this.setState({fortune: fortune});
-    console.log(fortune);
   }
-  */
+
 
   render() {
     return (
       <div>
         <Switch>
-          <Route exact path="/" render={(props) => (<View {...props} fortune={this.state.fortune} />)}/> />
-          <Route path="/add" render={(props) => (<Add {...props}  />)}/>
+          <Route exact path="/" render={(props) => (<View {...props} refreshFortune={this.refreshFortune} fortune={this.state.fortune} />)}/> />
+          <Route path="/add" render={(props) => (<Add {...props}  addFortune={this.addFortune} />)}/>
         </Switch>
 
       </div>
